@@ -1,8 +1,0 @@
-{"1.2.0",
-[{<<"gpb">>,{pkg,<<"gpb">>,<<"4.21.0">>},0}]}.
-[
-{pkg_hash,[
- {<<"gpb">>, <<"7A2EB8DD0F3032B7B46B04DCDB490FFABE43EAB3A9A1F905BD03C9EC35BABB0F">>}]},
-{pkg_hash_ext,[
- {<<"gpb">>, <<"DA45984D26048D8D508D3BBFFA6F4A5A5163841CEFBF40809622BF92B4640DE4">>}]}
-].

@@ -16,7 +16,7 @@
 compile(AppInfo, State) ->
     AppDir = rebar_app_info:dir(AppInfo),
     DepsDir = rebar_dir:deps_dir(State),
-    AppOutDir = rebar_app_info:out_dir(AppInfo),
+    % AppOutDir = rebar_app_info:out_dir(AppInfo),
     Opts = rebar_app_info:opts(AppInfo),
     {ok, GpbOpts0} = dict:find(gpb_opts, Opts),
     %% check if non-recursive
@@ -24,10 +24,10 @@ compile(AppInfo, State) ->
     SourceDirs = proplists:get_all_values(i, GpbOpts0),
 
 
-    TargetErlDir = filename:join([AppOutDir,
+    TargetErlDir = filename:join([AppDir,
                                   proplists:get_value(o_erl, GpbOpts0,
                                                       ?DEFAULT_OUT_ERL_DIR)]),
-    TargetHrlDir = filename:join([AppOutDir,
+    TargetHrlDir = filename:join([AppDir,
                                   proplists:get_value(o_hrl, GpbOpts0,
                                                       ?DEFAULT_OUT_HRL_DIR)]),
     rebar_api:debug("making sure that target erl dir ~p exists", [TargetErlDir]),
@@ -71,20 +71,21 @@ compile(AppInfo, State) ->
 clean(AppInfo, State) ->
     AppDir = rebar_app_info:dir(AppInfo),
     DepsDir = rebar_dir:deps_dir(State),
-    AppOutDir = rebar_app_info:out_dir(AppInfo),
+    % AppOutDir = rebar_app_info:out_dir(AppInfo),
     Opts = rebar_app_info:opts(AppInfo),
     {ok, GpbOpts} = dict:find(gpb_opts, Opts),
-    TargetErlDir = filename:join([AppOutDir,
+    TargetErlDir = filename:join([AppDir,
                                   proplists:get_value(o_erl, GpbOpts,
                                                       ?DEFAULT_OUT_ERL_DIR)]),
-    TargetHrlDir = filename:join([AppOutDir,
+    TargetHrlDir = filename:join([AppDir,
                                   proplists:get_value(o_hrl, GpbOpts,
                                                       ?DEFAULT_OUT_HRL_DIR)]),
     ProtoFiles = find_proto_files(AppDir, DepsDir, GpbOpts),
     rebar_api:debug("found proto files: ~p", [ProtoFiles]),
+
     GeneratedRootFiles =
         lists:usort(
-          [filename:rootname(get_target(ProtoFile, GpbOpts))
+          [filename:basename(filename:rootname(get_target(ProtoFile, GpbOpts)))
            || ProtoFile <- ProtoFiles]),
     GeneratedErlFiles = [filename:join([TargetErlDir, F ++ ".erl"]) ||
                             F <- GeneratedRootFiles],
